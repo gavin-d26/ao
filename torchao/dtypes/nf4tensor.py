@@ -1020,6 +1020,13 @@ def function_cuda(*args, **kwargs):
     return NF4Tensor(*construct_nf4_args(tensor, updated_attrs))
 
 
+@implements_torch_function(torch.chunk)
+def function_chunk(*args, **kwargs):
+    tensor = args[0]
+    chunks = tensor.detach().chunk(*args[1:], **kwargs)
+    return chunks
+
+
 @implements_torch_function(F.linear)
 def _(*args, **kwargs):
     input = args[0]
